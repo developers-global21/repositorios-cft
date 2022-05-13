@@ -1,0 +1,50 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Gestion de Usuarios y Categorías
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Gestión de Usuarios/Categorias</h1>
+
+		<table class="table table-bordered">
+			<thead>
+				<tr class='text-center'>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Apellido</th>
+					<th>Categoria</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set i = 1 %}
+				{% for usuarioCategorias in usuariosCategorias %}
+					<tr>
+						<td class='text-center'>{{ i }}</td>
+						<td>{{ usuarioCategorias.nombre }}</td>
+						<td>{{ usuarioCategorias.apellido }}</td>
+						<td>
+							{{ usuarioCategorias.nombre_categoria }}
+						</td>
+						<td class='text-center'>
+							<a href="{{ path('app_usuario_categoria_edit', {'id': usuarioCategorias.id}) }}" title='Editar Usuario/Categoría'>
+								<i class='fas fa-user-edit' style='font-size:22px; color:#14626f'></i>
+							</a>
+						</td>
+					</tr>
+					{% set i=i+1 %}
+				{% else %}
+					<tr>
+						<td colspan="9">No se han definido usuarios/categorias en el sistema</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="text-right">
+			<a href="{{ path('app_usuario_categoria_new') }}" title='Crear un nuevo Usuario/Categoria'>
+				<i class='fas fa-user-plus' style='font-size:22px; color:#14626f'></i>
+			</a>
+		</div>
+	</div>
+{% endblock %}

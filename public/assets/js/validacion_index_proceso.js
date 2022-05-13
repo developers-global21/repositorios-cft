@@ -1,0 +1,13 @@
+function mostrar(idproceso) {
+    $.ajax({
+            url: "search_proceso",
+            type: "POST",
+            dataType: "html",
+            data: {
+                id: idproceso,
+            },
+        }).done(function (res) {
+            console.log(res);
+            document.location = res;
+        });
+}

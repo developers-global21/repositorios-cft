@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevos Registros
+{% endblock %}
+{% block javascripts %}
+	<script src="/assets/js/validacion_new_registro.js"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+
+		<div class="row">
+			<div class="col-12 col-md-12 col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>Crear Nuevos Registros</h3>
+					</div>
+					<div class="card-body">
+						<form id='f1' name='f1' method="POST" enctype="multipart/form-data">
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Categoria</label>
+									<input type="text" class="form-control" id='categoria' name='categoria' value='{{ misCategorias.nombre}}' disabled>
+									<input type="hidden" id='idcategoria' name='idcategoria' value='{{ misCategorias.id }}'>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Procesos</label>
+									<select class="form-control" id="proceso" name="proceso" onchange="javascript:cambio()">
+										<option value="-99">Seleccione un Proceso</option>
+										{% for proceso in misProcesos %}
+											<option value="{{ proceso.id }}">{{ proceso.nombre }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Subprocesos</label>
+									<select class="form-control" id="subproceso" name="subproceso">
+										<option value="-99">Seleccione un Subproceso</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Periodo</label>
+									<select class="form-control" id="periodo" name="periodo">
+										<option value="-99">Seleccione un Periodo</option>
+										{% for periodo in misPeriodos %}
+											<option value="{{ periodo.id }}">{{ periodo.nombre }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<hr>
+							{% for indice in 0..9 %}
+								<div class="row">
+									<div class="col-12 col-md-12 col-lg-12">
+										<div class="form-group">
+											<input type="file" class="form-control-file input-md" id="archivo_{{ indice }}" name="archivo{{ indice }}" value="Seleccione su Archivo de Registro">
+											<label class="custom-file-label" for="archivo_{{ indice }}" data-browse="{Buscar}">Seleccione un archivo</label>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12 text-right">
+									<a href="{{ path('app_registro_index') }}" title='Regresar al listado'>
+										<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+									</a>
+									<a href="javascript:guardar()" title='Guardar'>
+										<i class='fas fa-database' style='font-size:22px; color:#14626f'></i>
+									</a>
+
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

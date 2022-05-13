@@ -1,0 +1,42 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Crear una nueva Categoría
+{% endblock %}
+{% block javascripts %}
+	<script src="/assets/js/validacion_new_categoria.js"></script>
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-6 col-lg-6" style='margin:auto !important'>
+				<div class="card">
+					<div class="card-header">
+						<h3>Crear una nueva Categoría</h3>
+					</div>
+					<div class="card-body">
+						<form id='f1' name='f1' method="POST">
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Nombre</label>
+									<input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la categoría" required>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12 text-right">
+									<button class='btn btn-primary' type="button" class="btn btn-primary" onclick='javascriot:guardar()'>Crear</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="col-12 col-md-12 col-lg-12 text-right">
+						<a href="{{ path('app_categoria_index') }}">
+							<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

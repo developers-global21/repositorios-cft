@@ -1,0 +1,19 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Crear una nueva Categoría
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Crear una nueva Categoría</h1>
+
+		{{ include('categoria/_form.html.twig') }}
+		<div class="row">
+			<div class="col-12 col-md-12 col-lg-12 text-right">
+				<a href="{{ path('app_categoria_index') }}">
+					<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

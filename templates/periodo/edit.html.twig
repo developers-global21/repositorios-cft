@@ -1,0 +1,23 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Editar Periodo
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h3>Editar Periodo</h3>
+		<div class='row'>
+			<div class="col-12 col-md-12 col-lg-12">
+				{{ include('periodo/_form.html.twig', {'button_label': 'Guardar'}) }}
+			</div>
+		</div>
+
+		<div class="col-12 col-md-12 col-lg-12 text-right">
+			<a href="{{ path('app_periodo_index') }}">
+				<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+			</a>
+		</div>
+
+		{{ include('periodo/_delete_form.html.twig') }}
+	</div>
+{% endblock %}

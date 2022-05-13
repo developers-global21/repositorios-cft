@@ -1,0 +1,57 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Subprocesos
+{% endblock %}
+{% block javascripts %}
+	<script src="/assets/js/validacion_index_subproceso.js"></script>
+	<script src="/assets/js/validacion_delete_subproceso.js"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<h1>Subprocesos</h1>
+		<table class="table table-bordered">
+			<thead>
+				<tr align='center'>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Categoria</th>
+					<th>Proceso</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set i = 1 %}
+				{% for subproceso in subprocesos %}
+					<tr>
+						<td class='text-center'>{{ i }}</td>
+						<td>{{ subproceso.nombre }}</td>
+						<td>{{ subproceso.categoria }}</td>
+						<td>{{ subproceso.subcategoria }}</td>
+						<td class='text-center'>
+							<a href="javascript:mostrar({{subproceso.id}})" title='Ver detalles del Proceso'>
+								<i class='fas fa-glasses' style='font-size:22px; color:#14626f'></i>
+							</a>
+							<a href="{{ path('app_subproceso_edit', {'id': subproceso.id}) }}" title='Editar este Proceso'>
+								<i class='far fa-edit' style='font-size:22px; color:#14626f'></i>
+							</a>
+							<a href="javascript:borrar({{subproceso.id }})" title='Borrar este Proceso'>
+								<i class='fas fa-eraser' style='font-size:22px;color:red'></i>
+							</a>
+						</td>
+					</tr>
+					{% set i = i + 1 %}
+				{% else %}
+					<tr>
+						<td colspan="3">No se han definido subprocesos</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="text-right">
+			<a href="{{ path('app_subproceso_new') }}" title='Crear un nuevo Subproceso'>
+				<i class='fas fa-folder-open' style='font-size:22px ; color:#14626f'></i>
+			</a>
+		</div>
+	</div>
+
+{% endblock %}

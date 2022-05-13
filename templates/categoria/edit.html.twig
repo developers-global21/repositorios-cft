@@ -1,0 +1,47 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Editar Categoría
+{% endblock %}
+{% block javascripts %}
+	<script src="/assets/js/validacion_edit_categoria.js"></script>
+	<script src="/assets/js/validacion_delete_categoria.js"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-6 col-lg-6" style='margin:auto !important'>
+				<div class="card">
+					<div class="card-header">
+						<h3>Editar Categoría</h3>
+					</div>
+					<div class="card-body">
+						<form id='f1' name='f1' method="POST">
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Nombre</label>
+									<input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre de la categoría" required value='{{categorium.nombre}}'>
+								</div>
+							</div>
+							<div class="row">&nbsp;</div>
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12 text-right">
+									<input type='hidden' id='id' name='id' value='{{categorium.id}}'>
+									<a href="{{ path('app_categoria_index') }}" title='Regresar al listado'>
+										<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+									</a>
+									<a href="javascript:guardar()" title='Guardar los Cambios'>
+										<i class='fas fa-database' style='font-size:22px; color:#14626f'></i>
+									</a>
+									<a href="javascript:borrar({{categorium.id }})" title='Borrar esta Categoría'>
+										<i class='fas fa-eraser' style='font-size:22px;color:red'></i>
+									</a>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

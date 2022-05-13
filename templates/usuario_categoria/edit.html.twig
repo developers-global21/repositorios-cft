@@ -1,0 +1,61 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Editar Usuario/Categoria
+{% endblock %}
+{% block javascripts %}
+	<script src="/assets/js/validacion_edit_usuario_categoria.js"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-6 col-lg-6" style='margin:auto !important'>
+				<div class="card">
+					<div class="card-header">
+						<h3>Editar Usuario/Categoría</h3>
+					</div>
+					<div class="card-body">
+						<form id='f1' name='f1' method="POST">
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Usuario</label>
+									<input type="text" class="form-control" id="nombre" name="nombre" value="{{ usuario.nombre ~ usuario.apellido }}" disabled>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Categoria</label>
+									<select class="form-control" id="categoria" name="categoria">
+										<option value="-99">Seleccione una categoria</option>
+										{% for categoria in categorias %}
+											{% if categoria.id == usuarioCategoria.categoria.id %}
+												<option value="{{ categoria.id }}" selected>{{ categoria.nombre }}</option>
+											{% else %}
+												<option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+											{% endif %}
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="row">&nbsp;</div>
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12 text-right">
+									<input type='hidden' name='usuario' id='usuario' value='{{ usuario.id }} '>
+									<input type='hidden' name='id' id='id' value='{{ usuarioCategoria.id }} '>
+									<a href="javascript:guardar()" title='Guardar'>
+										<i class='fas fa-database' style='font-size:22px; color:#14626f'></i>
+									</a>
+								</div>
+							</div>
+						</form>
+
+						<div class="col-12 col-md-12 col-lg-12 text-right">
+							<a href="{{ path('app_usuario_categoria_index') }}">
+								<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

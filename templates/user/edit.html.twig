@@ -1,0 +1,22 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Editar Usuario
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Editar Usuario</h1>
+		{{ include('user/_form.html.twig', {'button_label': 'Guardar'}) }}
+		<div class="row">
+			<div class="col-12 col-md-12 col-lg-12 text-right">
+				<a href="{{ path('app_user_index') }}">
+					<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 col-md-12 col-lg-12 text-right">
+				{{ include('user/_delete_form.html.twig') }}
+			</div>
+		</div>
+	{% endblock %}

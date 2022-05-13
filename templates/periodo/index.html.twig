@@ -1,0 +1,50 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Periodos
+{% endblock %}
+{% block javascripts %}
+	<script src="/assets/js/validacion_delete_periodo.js"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<h3>Periodos</h3>
+		<table class="table table-bordered">
+			<thead>
+				<tr align='center'>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set i = 1 %}
+				{% for periodo in periodos %}
+					<tr>
+						<td class='text-center'>{{ i }}</td>
+						<td>{{ periodo.nombre }}</td>
+						<td class='text-center'>
+							<a href="{{ path('app_periodo_edit', {'id': periodo.id}) }}" title='Editar esta categoría'>
+								<i class='far fa-edit' style='font-size:22px; color:#14626f'></i>
+							</a>
+							<a href="javascript:borrar({{periodo.id }})" title='Borrar esta Categoría'>
+								<i class='fas fa-eraser' style='font-size:22px;color:red'></i>
+							</a>
+						</td>
+					</tr>
+					{% set i = i + 1  %}
+				{% else %}
+					<tr>
+						<td colspan="3">No se han definido Periodos</td>
+					</tr>
+				{% endfor %}
+
+
+			</tbody>
+		</table>
+		<div class="text-right">
+			<a href="{{ path('app_periodo_new') }}" title='Crear un nuevo Periodo'>
+				<i class='fas fa-folder-open' style='font-size:22px ; color:#14626f'></i>
+			</a>
+		</div>
+	</div>
+{% endblock %}

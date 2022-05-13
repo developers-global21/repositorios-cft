@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Bienvenido
+			{% endblock %}
+		</title>
+		<link
+		rel="shortcut icon" type="image/x-icon" href="../../assets/images/logo.png"/>
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			<link href="../../assets/css/global.css" rel="stylesheet" type="text/css">
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+			<link
+			rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+			<!-- jQuery library -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<!-- Popper JS -->
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<!-- Latest compiled JavaScript -->
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+			<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		{% endblock %}
+
+		{% block javascripts %}{% endblock %}
+	</head>
+	<body>
+		{% block barra %}
+			<nav class="navbar navbar-expand-lg navbar-light" style="background-color:#14626f !important">
+				<a class="navbar-brand" href="/dashboard_admin"><img src="../../assets/images/logo2.png" class="img-thumbnail" width="100px" height="auto"></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="nav navbar-nav navbar-right text-light">
+						<li class="dropdown">
+							<a href="/#" class="dropdown-toggle text-light" data-toggle="dropdown">Gestión de Usuarios<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li style='font-size:0.8em; padding:3px'>
+									<a href="/user/">Usuarios</a>
+								</li>
+								<li style='font-size:0.8em; padding:3px'>
+									<a href="/usuario_categoria/" title='Gestionar la Asociación de Usuarios/Categorias'>Gestión de Usuarios/Categorias</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a class="nav-link text-light" href="/categoria/" title='Gestión de Categorias'>Categorias</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-light" href="/subcategoria/" title='Gestión de Procesos'>Procesos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-light" href="/subproceso/" title='Gestión de Subprocesos'>Subprocesos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-light" href="/periodo/" title='Gestión de Periodos'>Periodos</a>
+						</li>
+						<ul class="navbar-nav mr-auto text-light">
+							<li class="nav-item">
+								<a class="nav-link text-light" href="../../../logout">Salir</a>
+							</li>
+						</ul>
+					</ul>
+				</div>
+			</nav>
+			<hr>
+		{% endblock %}
+		{% block body %}{% endblock %}
+		{% block modales %}
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 id="title_modal" class="modal-title">Espere por favor</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<div class="modal-body">
+							<p id="content_modal" align="center"><img src="../../assets/images/wait2.gif" width="50" height="50"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endblock %}
+	</body>
+</html>

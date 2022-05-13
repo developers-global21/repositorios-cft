@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevos Registros
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Create new Registro</h1>
+
+		{{ include('registro/_form.html.twig') }}
+		<div class="col-12 col-md-12 col-lg-12 text-right">
+			<a href="{{ path('app_categoria_index') }}">
+				<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+			</a>
+		</div>
+	</div>
+{% endblock %}

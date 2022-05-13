@@ -1,0 +1,61 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Crear Usuario/Categoría
+{% endblock %}
+{% block javascripts %}
+	<script src="/assets/js/validacion_new_usuario_categoria.js"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-6 col-lg-6" style='margin:auto !important'>
+				<div class="card">
+					<div class="card-header">
+						<h3>Crear Usuario/Categoría</h3>
+					</div>
+					<div class="card-body">
+						<form id='f1' name='f1' method="POST">
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Categoría</label>
+									<select class="form-control" id="categoria" name="categoria">
+										<option value="-99">Seleccione una categoría</option>
+										{% for categoria in categorias %}
+											<option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12">
+									<label for="nombre">Usuario</label>
+									<select class="form-control" id="usuario" name="usuario">
+										<option value="-99">Seleccione un Usuario</option>
+										{% for usuario in  usuarios %}
+											<option value="{{ usuario.id }}">{{ usuario.nombre ~ " " ~ usuario.apellido }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="row">&nbsp;</div>
+							<div class="row">
+								<div class="col-12 col-md-12 col-lg-12 text-right">
+									<a href="javascript:guardar()" title='Guardar'>
+										<i class='fas fa-database' style='font-size:22px; color:#14626f'></i>
+									</a>
+								</div>
+							</div>
+						</form>
+
+						<div class="col-12 col-md-12 col-lg-12 text-right">
+							<a href="{{ path('app_usuario_categoria_index') }}">
+								<i class='fas fa-angle-double-left' style='font-size:22px; color:#14626f'></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

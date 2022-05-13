@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registros
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1>Registros</h1>
+
+		<table class="table">
+			<thead>
+				<tr align='center'>
+					<th>Id</th>
+					<th>Nombre</th>
+					<th>Archivo</th>
+					<th>Categoria</th>
+					<th>Proceso</th>
+					<th>Subproceso</th>
+					<th>Periodo</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set i = 1 %}
+				{% for registro in registros %}
+					<tr>
+						<td align='center'>{{ i}}</td>
+						<td>{{ registro.nombre }}</td>
+						<td align='center'>
+							<a href="{{ registro.url }}" target="_blank">
+								<i class='fas fa-download' style='font-size:22px; color:#14626f'></i>
+							</a>
+
+						</td>
+						<td>{{ registro.categoria.nombre }}</td>
+						<td>{{ registro.subcategoria.nombre }}</td>
+						<td>{{ registro.subproceso.nombre }}</td>
+						<td align='center'>{{ registro.periodo.nombre }}</td>
+						<td align='center'>
+							<a href="javascript:borrar({{registro.id }})" title='Borrar este Registro'>
+								<i class='fas fa-eraser' style='font-size:22px;color:red'></i>
+							</a>
+						</td>
+					</tr>
+
+					{% set i = i + 1 %}
+				{% else %}
+					<tr>
+						<td colspan="6">No se han definido registros</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="text-right">
+			<a href="{{ path('app_registro_new') }}" title='Crear un nuevo Registro'>
+				<i class='fas fa-folder-open' style='font-size:22px ; color:#14626f'></i>
+			</a>
+		</div>
+	</div>
+{% endblock %}
