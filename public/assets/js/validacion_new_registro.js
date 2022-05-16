@@ -3,7 +3,7 @@ function guardar() {
     var proceso=document.getElementById("proceso").value;
     var subproceso=document.getElementById("subproceso").value;
     var periodo=document.getElementById("periodo").value;
-    if (categoria!="-99" && proceso!="-99" && subproceso!="-99" && periodo!="-99") {
+    if (categoria!="-99"  && periodo!="-99") {
         var f = $(this);
         var formData = new FormData(document.getElementById("f1"));
         formData.append("dato", "valor");
@@ -21,6 +21,7 @@ function guardar() {
             contentType: false,
             processData: false
         }).done(function (res) {
+            console.log(res);
             var data = JSON.parse(res)
             console.log(data);
             if (data.length > 0) {
@@ -55,7 +56,7 @@ function guardar() {
         });
     }else{
         titulo = 'Atención'
-        parrafo = "<span class='text-danger'>Debe seleccionar un proceso, subproceso y periodo</span>"
+        parrafo = "<span class='text-danger'>Debe seleccionar por lo menos un proceso y un periodo</span>"
         $('#title_modal').html(titulo)
         $('#content_modal').html(parrafo)
         $('#myModal').modal()    
@@ -71,12 +72,12 @@ function cambio(){
             dataType: "html",
             data: {id: proceso}
         }).done(function (res) {
-            var data = JSON.parse(res)
+            var data = JSON.parse(res)    
             document.getElementById("subproceso").length=0;
             var html = "<option value='-99'>Seleccione un Subproceso</option>";
             if (data[0].length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                       html += "<option value='" + data[i][0]['id'] + "'>" + data[i][0]['nombre'] + "</option>"
+                for (var i = 0; i < data[0].length; i++) {
+                       html += "<option value='" + data[0][i]['id'] + "'>" + data[0][i]['nombre'] + "</option>"
                 }
 
             } else {

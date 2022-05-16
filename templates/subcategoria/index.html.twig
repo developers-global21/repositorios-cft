@@ -14,6 +14,8 @@
 				<tr align='center'>
 					<th>Id</th>
 					<th>Nombre</th>
+					<th>Categoria</th>
+					<th>URL</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
@@ -23,6 +25,10 @@
 					<tr>
 						<td class='text-center'>{{ i }}</td>
 						<td>{{ subcategorium.nombre }}</td>
+						<td>{{ subcategorium.categoria.nombre }}</td>
+						<td>
+							<a href='{{ subcategorium.directorio|replace({ (directorio) : url_final }) }}/index.php' target='_blank'>{{ subcategorium.directorio|replace({ (directorio) : url_final  }) }}/index.php</a>
+						</td>
 						<td align='center'>
 							<a href="javascript:mostrar({{subcategorium.id}})" title='Ver detalles del Proceso'>
 								<i class='fas fa-glasses' style='font-size:22px; color:#14626f'></i>
@@ -38,7 +44,7 @@
 					{% set i = i + 1 %}
 				{% else %}
 					<tr>
-						<td colspan="3">No se han definido Procesos</td>
+						<td colspan="5">No se han definido Procesos</td>
 					</tr>
 				{% endfor %}
 			</tbody>

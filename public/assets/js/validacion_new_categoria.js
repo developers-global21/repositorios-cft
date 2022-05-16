@@ -16,6 +16,7 @@ function guardar() {
         contentType: false,
         processData: false
     }).done(function (res) {
+        console.log(res);
         var data = JSON.parse(res)
         console.log(data);
         if (data.length > 0) {

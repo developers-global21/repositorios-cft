@@ -40,9 +40,15 @@ class CategoriaController extends AbstractController
     public function index(CategoriaRepository $categoriaRepository): Response
     {
         $categorias = $categoriaRepository->findAll();
-
+        $server_name = $_SERVER['SERVER_NAME'];
+        $server_port = $_SERVER['SERVER_PORT'];
+        $direccion_finala = "http://" . $server_name . ":" . $server_port . "/";
+        $directorio = $this->getParameter('registros');
+        $url_final = str_replace($directorio, $direccion_finala, $directorio) . "assets/archivos/";
         return $this->render('categoria/index.html.twig', [
             'categorias' => $categorias,
+            'url_final' => $url_final,
+            'directorio' => $directorio,
         ]);
     }
 
@@ -92,8 +98,13 @@ class CategoriaController extends AbstractController
         $entityManager->flush();
         //--- creamos el directorio 
         $filesystem = new Filesystem();
-        $filesystem->mkdir($directorio, '0775');
-
+        $filesystem->mkdir($directorio, 0777);
+        $filesystem->copy($this->getParameter('registros') . '/index.php', $directorio . '/index.php');
+        $filesystem->copy($this->getParameter('registros') . '/busca_procesos.php', $directorio . '/busca_procesos.php');
+        $filesystem->copy($this->getParameter('registros') . '/busca_subprocesos.php', $directorio . '/busca_subprocesos.php');
+        $filesystem->chmod($directorio . '/index.php', 0777);
+        $filesystem->chmod($directorio . '/busca_procesos.php', 0777);
+        $filesystem->chmod($directorio . '/busca_subprocesos.php', 0777);
         $salida = array("1");
         $response = new Response(json_encode($salida));
         $response->headers->set('Content-Type', 'application/json');
@@ -224,6 +235,16 @@ class CategoriaController extends AbstractController
             $directorio = $categoria->getDirectorio();
             $filesystem = new Filesystem();
             if ($filesystem->exists($directorio)) {
+                //--- buscamos el archivo index.php para borrarlo
+                $archivo = $directorio . '/index.php';
+                $filesystem->remove($archivo);
+
+                $archivo = $directorio . '/busca_procesos.php';
+                $filesystem->remove($archivo);
+
+                $archivo = $directorio . '/busca_subprocesos.php';
+                $filesystem->remove($archivo);
+
                 $files = glob($directorio . "/*");
                 if (empty($files)) {
                     //--- eliminamos el directorio ------//

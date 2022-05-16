@@ -75,24 +75,22 @@ class SubprocesoRepository extends ServiceEntityRepository
     public function findAllSubprocesosProceso(int $id): array
     {
         /*
-    Subproceso
-        id	int(11) AI PK
-        categoria_id	int(11)
-        subcategoria_id	int(11)
-        nombre	varchar(255)
-        directorio	varchar(255)
-
-
-    */
+        Subproceso
+            id	int(11) AI PK
+            categoria_id	int(11)
+            subcategoria_id	int(11)
+            nombre	varchar(255)
+            directorio	varchar(255)
+        */
         $conn = $this->getEntityManager()->getConnection();
         $sql =  'SELECT 
-        p.id,
-        p.nombre,
-        p.directorio 
-        from subproceso p                  
-        where p.subcategoria_id = :categoriaId';
+        s.id,
+        s.nombre,
+        s.directorio 
+        from subproceso s                  
+        where s.subcategoria_id = :subcategoriaId';
         $stmt = $conn->prepare($sql);
-        $resultSet = $stmt->executeQuery(['categoriaId' => $id]);
+        $resultSet = $stmt->executeQuery(['subcategoriaId' => $id]);
         return $resultSet->fetchAllAssociative();
     }
 }

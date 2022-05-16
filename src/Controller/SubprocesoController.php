@@ -44,9 +44,15 @@ class SubprocesoController extends AbstractController
     public function index(SubprocesoRepository $subprocesoRepository): Response
     {
         $subprocesos = $subprocesoRepository->findAll();
-
+        $server_name = $_SERVER['SERVER_NAME'];
+        $server_port = $_SERVER['SERVER_PORT'];
+        $direccion_finala = "http://" . $server_name . ":" . $server_port . "/";
+        $directorio = $this->getParameter('registros');
+        $url_final = str_replace($directorio, $direccion_finala, $directorio) . "assets/archivos/";
         return $this->render('subproceso/index.html.twig', [
             'subprocesos' => $subprocesos,
+            'url_final' => $url_final,
+            'directorio' => $directorio,
         ]);
     }
 
@@ -99,7 +105,15 @@ class SubprocesoController extends AbstractController
                 $entityManager->flush();
                 //--- creamos el directorio 
                 $filesystem = new Filesystem();
-                $filesystem->mkdir($directorioSubproceso, '0775');
+                $filesystem->mkdir($directorioSubproceso, 0777);
+                $filesystem->copy($this->getParameter('registros') . '/index.php', $directorioSubproceso . '/index.php');
+                $filesystem->copy($this->getParameter('registros') . '/busca_procesos.php', $directorioSubproceso . '/busca_procesos.php');
+                $filesystem->copy($this->getParameter('registros') . '/busca_subprocesos.php', $directorioSubproceso . '/busca_subprocesos.php');
+                $filesystem->chmod($directorioSubproceso . '/index.php', 0777);
+                $filesystem->chmod($directorioSubproceso . '/busca_procesos.php', 0777);
+                $filesystem->chmod($directorioSubproceso . '/busca_subprocesos.php', 0777);
+
+
                 $estado = '1';
             } else {
                 $estado = '0';
@@ -238,6 +252,16 @@ class SubprocesoController extends AbstractController
             $directorio = $subproceso->getDirectorio();
             $filesystem = new Filesystem();
             if ($filesystem->exists($directorio)) {
+                //--- buscamos el archivo index.php para borrarlo
+                $archivo = $directorio . '/index.php';
+                $filesystem->remove($archivo);
+
+                $archivo = $directorio . '/busca_procesos.php';
+                $filesystem->remove($archivo);
+
+                $archivo = $directorio . '/busca_subprocesos.php';
+                $filesystem->remove($archivo);
+
                 $files = glob($directorio . "/*");
                 if (empty($files)) {
                     //--- eliminamos el directorio ------//

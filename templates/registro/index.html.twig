@@ -1,8 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_dash.html.twig' %}
 
 {% block title %}Registros
 {% endblock %}
-
+{% block javascripts %}
+	<script src="/assets/js/validacion_delete_registro.js"></script>
+{% endblock %}
 {% block body %}
 	<div class="container">
 		<h1>Registros</h1>

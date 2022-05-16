@@ -1,13 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_dash.html.twig' %}
 
-{% block title %}Edit Registro{% endblock %}
+{% block title %}Edit Registro
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Registro</h1>
+	<h1>Edit Registro</h1>
 
-    {{ include('registro/_form.html.twig', {'button_label': 'Update'}) }}
+	{{ include('registro/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_registro_index') }}">back to list</a>
+	<a href="{{ path('app_registro_index') }}">back to list</a>
 
-    {{ include('registro/_delete_form.html.twig') }}
+	{{ include('registro/_delete_form.html.twig') }}
 {% endblock %}

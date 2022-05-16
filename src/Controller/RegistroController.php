@@ -177,8 +177,16 @@ class RegistroController extends AbstractController
             $periodo = $periodoRepository->find($periodoId);
 
             //--- determinamos el directorio de destino
-            $directorio_final = $subproceso->getDirectorio() . "/";
-            $directorio_final2 = (str_replace($this->getParameter('registros'), '/assets/archivos/', $subproceso->getDirectorio())) . "/";
+            if ($subproceso) {
+                $directorio_final = $subproceso->getDirectorio() . "/";
+            } else {
+                $directorio_final = $subcategoria->getDirectorio() . "/";
+            }
+            if ($subproceso) {
+                $directorio_final2 = (str_replace($this->getParameter('registros'), '/assets/archivos/', $subproceso->getDirectorio())) . "/";
+            } else {
+                $directorio_final2 = (str_replace($this->getParameter('registros'), '/assets/archivos/', $subcategoria->getDirectorio())) . "/";
+            }
 
             $originalFilename = pathinfo($file0->getClientOriginalName(), PATHINFO_FILENAME);
             $fileExtension0 = strtoupper($file0->guessExtension());
@@ -213,7 +221,11 @@ class RegistroController extends AbstractController
             $fileRecord->setNombre($originalFilename);
             $fileRecord->setCategoria($categoria);
             $fileRecord->setSubcategoria($subcategoria);
-            $fileRecord->setSubproceso($subproceso);
+            if ($subproceso) {
+                $fileRecord->setSubproceso($subproceso);
+            } else {
+                $fileRecord->setSubproceso(0);
+            }
             $fileRecord->setPeriodo($periodo);
             $fileRecord->setUrl($directorio_final2 . $newFilename0);
 
@@ -460,6 +472,40 @@ class RegistroController extends AbstractController
         $salida = array("1", $newArchivoname0, $newArchivoname1, $newArchivoname2, $newArchivoname3, $newArchivoname4, $newArchivoname5, $newArchivoname6, $newArchivoname7, $newArchivoname8, $newArchivoname9);
         $response = new Response(json_encode($salida));
 
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @Route("/delete_registro/", name="delete_registro", methods={"POST"})
+     */
+    public function deleteRegistro(Request $request, ManagerRegistry $doctrine, RegistroRepository $registroRepository): Response
+    {
+        $params = $request->request->all();
+        $id = $params['id'];
+        //--- buscamos la categoria ------//
+        $registro = $registroRepository->find($id);
+        if (!is_null($registro)) {
+            // existe buscamos el directorio y comprobamos que este vacio  
+            ///home/egonzalez/composer/symphony/repositorio/public/assets/archivos// 
+            $url = str_replace('/assets/archivos/', '', $this->getParameter('registros')) . $registro->getUrl();
+            $filesystem = new Filesystem();
+            if ($filesystem->exists($url)) {
+                //--- eliminamos el directorio ------//
+                $filesystem->remove($url);
+                //--- eliminamos la categoria ------//
+                $entityManager = $doctrine->getManager();
+                $entityManager->remove($registro);
+                $entityManager->flush();
+                $estado = '1';
+            } else {
+                $estado = '0';
+            }
+        } else {
+            $estado = '0';
+        }
+        $salida = array($estado);
+        $response = new Response(json_encode($salida));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }

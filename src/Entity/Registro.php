@@ -19,25 +19,25 @@ class Registro
 
     /**
      * @ORM\ManyToOne(targetEntity=Categoria::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $categoria;
 
     /**
      * @ORM\ManyToOne(targetEntity=Subcategoria::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $subcategoria;
 
     /**
      * @ORM\ManyToOne(targetEntity=Subproceso::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)   
      */
     private $subproceso;
 
     /**
      * @ORM\ManyToOne(targetEntity=Periodo::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $periodo;
 
