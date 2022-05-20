@@ -5,41 +5,21 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $ruta = __DIR__;
-$ruta_base = '/home/egonzalez/composer/symphony/repositorio/public/';
-$ruta_servidor = "http://localhost:8000";
-
-function obtener_estructura_directorios($ruta)
-{
-	// Se comprueba que realmente sea la ruta de un directorio
-	if (is_dir($ruta)) {
-		// Abre un gestor de directorios para la ruta indicada
-		$gestor = opendir($ruta);
-		echo "<ul>";
-
-		// Recorre todos los elementos del directorio
-		while (($archivo = readdir($gestor)) !== false) {
-
-			$ruta_completa = $ruta . "/" . $archivo;
-
-			// Se muestran todos los archivos y carpetas excepto "." y ".."
-			if ($archivo != "." && $archivo != ".." && $archivo != 'index.php') {
-				// Si es un directorio se recorre recursivamente
-				if (is_dir($ruta_completa)) {
-					echo "<li>" . $archivo . "</li>";
-					obtener_estructura_directorios($ruta_completa);
-				} else {
-					echo "<li><a href='$archivo' target='_blank'>" . $archivo . "</a></li>";
-				}
-			}
-		}
-
-		// Cierra el gestor de directorios
-		closedir($gestor);
-		echo "</ul>";
-	} else {
-		echo "No es una ruta de directorio valida<br/>";
-	}
+$ruta_base = $_SERVER['DOCUMENT_ROOT'];
+$puerto = $_SERVER['SERVER_PORT'];
+$server_name = $_SERVER['SERVER_NAME'];
+switch ($puerto) {
+	case "80":
+		$ruta_servidor = "http://" . $server_name . "/";
+		break;
+	case "8000":
+		$ruta_servidor = "http://" . $server_name . ":" . $puerto . "/";
+		break;
+	case "443":
+		$ruta_servidor = "http://" . $server_name . ":" . $puerto . "/";
+		break;
 }
+
 $idCategoria = $_REQUEST['idcategoria'];
 
 if (isset($_REQUEST['idproceso'])) {
@@ -109,6 +89,11 @@ $con = mysqli_connect("localhost", "root", "Ruvae200");
 			window.location.href = "index.php?idcategoria=" + idcategoria;
 		}
 
+		function cambio1() {
+			var idcategoria = document.getElementById('categoria').value;
+			window.$("#div001").load("busca_procesos.php?idcategoria=" + idcategoria);
+		}
+
 		function cambio() {
 			var idcategoria = document.getElementById('categoria').value;
 			var idproceso = document.getElementById('proceso').value;
@@ -129,7 +114,7 @@ $con = mysqli_connect("localhost", "root", "Ruvae200");
 					<div class='col-12 col-md-3 col-lg-3 text-center'>
 						<div class='input-group'>
 							<label class='input-group-text'>Categoría</label>
-							<select class='form-control' id='categoria' name='categoria'>
+							<select class='form-control' id='categoria' name='categoria' onChange="javascript:cambio1()">
 								<option value='-99'>Seleccione</option>
 								<?php
 								if ($con) {
@@ -378,7 +363,21 @@ $con = mysqli_connect("localhost", "root", "Ruvae200");
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<p id="content_modal" align="left" class='text-danger'>No se consiguieron Subprocesos asociados a este Proceso, por favor cambie la combinación de los mismos</p>
+					<p id="content_modal" align="left" class='text-danger'>No se consiguieron Subprocesos asociados a este Proceso, por favor cambie la combinación de los filtros</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="myModal5" role="dialog">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="title_modal" class="modal-title">Atención</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p id="content_modal" align="left" class='text-danger'>No se consiguieron Procesos asociados a esta Categoria, por favor cambie la combinación de los filtros</p>
 				</div>
 			</div>
 		</div>

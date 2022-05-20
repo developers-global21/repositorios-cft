@@ -6,8 +6,145 @@
 	<script src="/assets/js/validacion_delete_registro.js"></script>
 {% endblock %}
 {% block body %}
-	<div class="container">
+	<div class="container-fluid">
 		<h1>Registros</h1>
+		<div class="row">
+			<div class="col-12 col-md-12 col-lg-12 navigation text-center">
+				<table class="table">
+					<tr>
+						<td width='75%' class='text-center'>
+							{{ knp_pagination_render(registros) }}
+						</td>
+						<td width='25%'>
+							<div class='input-group'>
+								<label class='input-group-text'>Cantidad de Registros</label>
+								<select id='can_reg' name='can_reg' class="form-control" onchange="javascript:pagina()">
+									{% if (canReg == 5 ) %}
+										<option value="5" selected>5</option>
+									{% else %}
+										<option value="5">5</option>
+									{% endif %}
+
+									{% if (canReg == 10 ) %}
+										<option value="10" selected>10</option>
+									{% else %}
+										<option value="10">10</option>
+									{% endif %}
+
+									{% if (canReg == 20 ) %}
+										<option value="20" selected>20</option>
+									{% else %}
+										<option value="20">20</option>
+									{% endif %}
+
+									{% if (canReg == 50 ) %}
+										<option value="50" selected>50</option>
+									{% else %}
+										<option value="50">50</option>
+									{% endif %}
+
+									{% if (canReg == 100 ) %}
+										<option value="100" selected>100</option>
+									{% else %}
+										<option value="100">100</option>
+									{% endif %}
+								</select>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-12 col-md-3 col-lg-3 text-center'>
+				<div class='input-group'>
+					<label class='input-group-text'>Categoría</label>
+					<select class='form-control' id='categoria' name='categoria' onchange="javascript:cambio1()">
+						<option value='-99'>Todas</option>
+						{% for categoria in categorias %}
+							{% if (categoria.id == categoriaId) %}
+								<option value='{{ categoria.id }}' selected>{{ categoria.nombre }}</option>
+							{% else %}
+								<option value='{{ categoria.id }}'>{{ categoria.nombre }}</option>
+							{% endif %}
+						{% endfor %}
+
+					</select>
+				</div>
+			</div>
+
+			<div class='col-12 col-md-3 col-lg-3 text-center'>
+				<div class='input-group'>
+					<label class='input-group-text'>Proceso</label>
+					<select class='form-control' id='proceso' name='proceso' onchange="javascript:cambio()">
+						<option value='-99'>Todos</option>
+						{% if (subCategorias|length > 0) %}
+							{% for subcategoria in subCategorias %}
+								{% if (subcategoria.id == subProcesoId) %}
+									<option value='{{ subcategoria.id }}' selected>{{ subcategoria.nombre }}</option>
+								{% else %}
+									<option value='{{ subcategoria.id }}'>{{ subcategoria.nombre }}</option>
+								{% endif %}
+							{% endfor %}
+
+						{% endif %}
+
+					</select>
+				</div>
+			</div>
+
+			<div class='col-12 col-md-2 col-lg-2 text-center'>
+				<div class='input-group'>
+					<label class='input-group-text'>Subproceso</label>
+					<select class='form-control' id='subproceso' name='subproceso'>
+						<option value='-99'>Todos</option>
+						{% if (subProcesos|length > 0) %}
+							{% for subproceso in subProcesos %}
+								{% if (subproceso.id == subProcesoId) %}
+									<option value='{{ subproceso.id }}' selected>{{ subproceso.nombre }}</option>
+								{% else %}
+									<option value='{{ subproceso.id }}'>{{ subproceso.nombre }}</option>
+								{% endif %}
+							{% endfor %}
+
+						{% endif %}
+					</select>
+				</div>
+			</div>
+
+			<div class='col-12 col-md-2 col-lg-2 text-center'>
+				<div class='input-group'>
+					<label class='input-group-text'>Periodo</label>
+					<select class='form-control' id='periodo' name='periodo'>
+						<option value='-99'>Todos</option>
+						{% for periodo in periodos %}
+							{% if (periodo.id == periodoId) %}
+								<option value='{{ periodo.id }}' selected>{{ periodo.nombre }}</option>
+							{% else %}
+								<option value='{{ periodo.id }}'>{{ periodo.nombre }}</option>
+							{% endif %}
+						{% endfor %}
+
+					</select>
+				</div>
+			</div>
+			<div class='col-12 col-md-2 col-lg-2 text-center'>
+				<div class='input-group'>
+					<input type='button' class='btn btn-primary' value='Filtrar' onclick='javascript:filtrar()'>
+					<input type='button' class='btn btn-secondary' value='Limpiar' onclick="javascript:Limpiar('<?php echo ($idCategoria) ?>')">
+				</div>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-12 col-lg-12 text-right">
+				<a href="{{ path('app_registro_new') }}" title='Crear un nuevo Registro'>
+					<i class='fas fa-folder-open' style='font-size:22px ; color:#14626f'></i>
+				</a>
+			</div>
+		</div>
+
 
 		<table class="table">
 			<thead>
@@ -48,15 +185,10 @@
 					{% set i = i + 1 %}
 				{% else %}
 					<tr>
-						<td colspan="6">No se han definido registros</td>
+						<td colspan="6" class='text-danger'>No se han definido registros</td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
-		<div class="text-right">
-			<a href="{{ path('app_registro_new') }}" title='Crear un nuevo Registro'>
-				<i class='fas fa-folder-open' style='font-size:22px ; color:#14626f'></i>
-			</a>
-		</div>
 	</div>
 {% endblock %}

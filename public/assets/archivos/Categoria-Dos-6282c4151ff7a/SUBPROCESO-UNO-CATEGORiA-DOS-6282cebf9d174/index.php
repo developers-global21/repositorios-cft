@@ -16,7 +16,7 @@ switch ($puerto) {
 		$ruta_servidor = "http://" . $server_name . ":" . $puerto . "/";
 		break;
 	case "443":
-		$ruta_servidor = "https://" . $server_name .  "/";
+		$ruta_servidor = "https://" . $server_name . ":" . $puerto . "/";
 		break;
 }
 
@@ -51,8 +51,8 @@ if (isset($_REQUEST['idperiodo'])) {
 } else {
 	$idPeriodo = '0';
 }
-require_once 'conexion.php';
 
+$con = mysqli_connect("localhost", "root", "Ruvae200");
 ?>
 <!DOCTYPE html>
 <html>

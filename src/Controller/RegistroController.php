@@ -37,6 +37,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -45,23 +46,138 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class RegistroController extends AbstractController
 {
     /**
-     * @Route("/", name="app_registro_index", methods={"GET"})
+     * @Route("/", name="app_registro_index", methods={"GET","POST"})
      */
     public function index(
+        Request $request,
+        CategoriaRepository $categoriaRepository,
+        SubcategoriaRepository $subcategoriaRepository,
+        SubprocesoRepository $subprocesoRepository,
         UsuarioCategoriaRepository $usuarioCategoriaRepository,
-        RegistroRepository $registroRepository
+        PeriodoRepository $periodoRepository,
+        RegistroRepository $registroRepository,
+        PaginatorInterface $paginator
     ): Response {
         $user = $this->getUser();
         // buscamos la categoria asignada al usuario
         $categoriaUser = $usuarioCategoriaRepository->findUsuarioCategoria($user->getId());
         $idCategoria = $categoriaUser[0]['categoria_id'];
 
+        if (!is_null($request->query->get('categoriaId'))) {
+            $categoriaId = $request->query->get('categoriaId');
+        } else {
+            $categoriaId = '-99';
+        }
+
+        if (!is_null($request->query->get('procesoId'))) {
+            $procesoId = $request->query->get('procesoId');
+        } else {
+            $procesoId = '-99';
+        }
+
+        if (!is_null($request->query->get('subprocesoId'))) {
+            $subProcesoId = $request->query->get('subprocesoId');
+        } else {
+            $subProcesoId = '-99';
+        }
+
+        if (!is_null($request->query->get('periodoId'))) {
+            $periodoId = $request->query->get('periodoId');
+        } else {
+            $periodoId = '-99';
+        }
+
+        //--- buscamos todas las categorias --------
+        $categorias = $categoriaRepository->findAll();
+
+        //---buscamos todos los periodos ------
+        $periodos = $periodoRepository->findAll();
+
+        //---- buscamos las subcategorias ------        
+        if ($categoriaId != '-99') {
+            $subCategorias = $subcategoriaRepository->findBy(['categoria' => intval($categoriaId)]);
+            if ($procesoId != '-99') {
+                $subProcesos = $subprocesoRepository->findBy(['categoria' => $categoriaId, 'subcategoria' => $procesoId]);
+                if ($subProcesoId != '-99') {
+                    if ($periodoId != '-99') {
+                        $misRegistros = $registroRepository->findBy([
+                            'categoria' => $categoriaId,
+                            'subcategoria' => $procesoId,
+                            'subproceso' => $subProcesoId,
+                            'periodo' => $periodoId
+                        ]);
+                    } else {
+                        $misRegistros = $registroRepository->findBy([
+                            'categoria' => $categoriaId,
+                            'subcategoria' => $procesoId,
+                            'subproceso' => $subProcesoId
+                        ]);
+                    }
+                } else {
+                    if ($periodoId != '-99') {
+                        $misRegistros = $registroRepository->findBy([
+                            'categoria' => $categoriaId,
+                            'subcategoria' => $procesoId,
+                            'periodo' => $periodoId
+                        ]);
+                    } else {
+                        $misRegistros = $registroRepository->findBy([
+                            'categoria' => $categoriaId,
+                            'subcategoria' => $procesoId
+                        ]);
+                    }
+                }
+            } else {
+                if ($periodoId != '-99') {
+                    $misRegistros = $registroRepository->findBy([
+                        'categoria' => $categoriaId,
+                        'periodo' => $periodoId
+                    ]);
+                } else {
+                    $misRegistros = $registroRepository->findBy([
+                        'categoria' => $categoriaId
+                    ]);
+                }
+                $subProcesos = NULL;
+            }
+        } else {
+            $subCategorias = NULL;
+            $subProcesos = NULL;
+            if ($periodoId != '-99') {
+                $misRegistros = $registroRepository->findBy([
+                    'periodo' => $periodoId
+                ]);
+            } else {
+                $misRegistros = $registroRepository->findAll();
+            }
+        }
 
         // buscamos los registros correspondientes a esta categoria
-        $misRegistros = $registroRepository->findBy(['categoria' => $idCategoria]);
+
+        //$misRegistros = $registroRepository->findAll();
+        $canReg = $request->query->getInt('can_reg', 20);
+
+        // Paginar los resultados de la consulta
+        $registros = $paginator->paginate(
+            // Consulta Doctrine, no resultados
+            $misRegistros,
+            // Definir el parámetro de la página
+            $request->query->getInt('page', 1),
+            // Items per page
+            $canReg
+        );
 
         return $this->render('registro/index.html.twig', [
-            'registros' => $misRegistros,
+            'registros' => $registros,
+            'canReg' => $canReg,
+            'categorias' => $categorias,
+            'subCategorias' => $subCategorias,
+            'subProcesos' => $subProcesos,
+            'periodos' => $periodos,
+            'categoriaId' => $categoriaId,
+            'procesoId' => $procesoId,
+            'subProcesoId' => $subProcesoId,
+            'periodoId' => $periodoId,
         ]);
     }
 
@@ -82,6 +198,8 @@ class RegistroController extends AbstractController
         $idCategoria = $categoriaUser[0]['categoria_id'];
         $misCategorias = $categoriaRepository->find(intval($idCategoria));
 
+        $allCategorias = $categoriaRepository->findAll();
+
         //--- buscamos los Procesos perteneceintes a esta categoria (subcategoria)
         $misProcesos = $subcategoriaRepository->findBy(['categoria' => $idCategoria]);
 
@@ -91,6 +209,7 @@ class RegistroController extends AbstractController
             'misCategorias' => $misCategorias,
             'misProcesos' => $misProcesos,
             'misPeriodos' => $periodos,
+            'allCategorias' => $allCategorias,
         ]);
     }
 
@@ -254,7 +373,7 @@ class RegistroController extends AbstractController
         $salida = array("1");
         $params = $request->request->all();
         $user = $this->getUser();
-        $idCategoria = $params['idcategoria'];
+        $idCategoria = $params['categoria'];
         $idSubcategoria = $params['proceso'];
         $idSubproceso = $params['subproceso'];
         $idPeriodo = $params['periodo'];

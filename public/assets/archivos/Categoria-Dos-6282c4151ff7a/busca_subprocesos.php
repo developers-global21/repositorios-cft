@@ -1,5 +1,5 @@
 <?php
-require_once 'conexion.php';
+$con = mysqli_connect("localhost", "root", "Ruvae200");
 if ($con) {
     $idCategoria = $_REQUEST['idcategoria'];
     $idProceso = $_REQUEST['idproceso'];

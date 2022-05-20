@@ -5,8 +5,20 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $ruta = __DIR__;
-$ruta_base = '/home/egonzalez/composer/symphony/repositorio/public/';
-$ruta_servidor = "http://localhost:8000";
+$ruta_base = $_SERVER['DOCUMENT_ROOT'];
+$puerto = $_SERVER['SERVER_PORT'];
+$server_name = $_SERVER['SERVER_NAME'];
+switch ($puerto) {
+	case "80":
+		$ruta_servidor = "http://" . $server_name . "/";
+		break;
+	case "8000":
+		$ruta_servidor = "http://" . $server_name . ":" . $puerto . "/";
+		break;
+	case "443":
+		$ruta_servidor = "http://" . $server_name . ":" . $puerto . "/";
+		break;
+}
 
 $idCategoria = $_REQUEST['idcategoria'];
 
@@ -351,7 +363,21 @@ $con = mysqli_connect("localhost", "root", "Ruvae200");
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<p id="content_modal" align="left" class='text-danger'>No se consiguieron Subprocesos asociados a este Proceso, por favor cambie la combinación de los mismos</p>
+					<p id="content_modal" align="left" class='text-danger'>No se consiguieron Subprocesos asociados a este Proceso, por favor cambie la combinación de los filtros</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="myModal5" role="dialog">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="title_modal" class="modal-title">Atención</h5>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p id="content_modal" align="left" class='text-danger'>No se consiguieron Procesos asociados a esta Categoria, por favor cambie la combinación de los filtros</p>
 				</div>
 			</div>
 		</div>

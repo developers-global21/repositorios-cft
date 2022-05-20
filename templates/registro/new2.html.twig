@@ -19,8 +19,16 @@
 							<div class="row">
 								<div class="col-12 col-md-12 col-lg-12">
 									<label for="nombre">Categoria</label>
-									<input type="text" class="form-control" id='categoria' name='categoria' value='{{ misCategorias.nombre}}' disabled>
-									<input type="hidden" id='idcategoria' name='idcategoria' value='{{ misCategorias.id }}'>
+									<select class="form-control" id="categoria" name="categoria" onchange="javascript:cambio1()">
+										<option value="-99">Seleccione un Proceso</option>
+										{% for categoria in allCategorias %}
+											{% if (categoria.id == misCategorias.id) %}
+												<option value="{{ categoria.id }}" selected>{{ categoria.nombre }}</option>
+											{% else %}
+												<option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+											{% endif %}
+										{% endfor %}
+									</select>
 								</div>
 							</div>
 

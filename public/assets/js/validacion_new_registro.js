@@ -1,5 +1,5 @@
 function guardar() {
-    var idcategoria=document.getElementById("idcategoria").value;
+    var idcategoria=document.getElementById("categoria").value;
     var proceso=document.getElementById("proceso").value;
     var subproceso=document.getElementById("subproceso").value;
     var periodo=document.getElementById("periodo").value;
@@ -61,6 +61,44 @@ function guardar() {
         $('#content_modal').html(parrafo)
         $('#myModal').modal()    
     }
+}
+
+function cambio1(){
+    var idcategoria=document.getElementById("categoria").value;
+    if (idcategoria!="-99") {
+        $.ajax({
+            url: "/dashboard/get_procesos/",
+            type: "post",
+            dataType: "html",
+            data: {id: idcategoria}
+        }).done(function (res) {
+            var data = JSON.parse(res)    
+            document.getElementById("proceso").length=0;
+            document.getElementById("subproceso").length=1;
+
+            var html = "<option value='-99'>Seleccione Proceso</option>";
+            if (data[0].length > 0) {
+                for (var i = 0; i < data[0].length; i++) {
+                       html += "<option value='" + data[0][i]['id'] + "'>" + data[0][i]['nombre'] + "</option>"
+                }
+
+            } else {
+                titulo = 'Atención'
+                parrafo = "<span class='text-danger'>No se consiguieron Procesos para esta Categoria<br>Inténtelo de nuevo</span>"
+                $('#title_modal').html(titulo)
+                $('#content_modal').html(parrafo)
+                $('#myModal').modal()                
+            }
+            document.getElementById("proceso").innerHTML = html;
+        });
+    }else{
+        titulo = 'Atención'
+        parrafo = "<span class='text-danger'>Debe seleccionar una categoria</span>"
+        $('#title_modal').html(titulo)
+        $('#content_modal').html(parrafo)
+        $('#myModal').modal()            
+    }
+
 }
 
 function cambio(){

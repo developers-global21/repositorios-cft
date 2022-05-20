@@ -41,8 +41,20 @@ class CategoriaController extends AbstractController
     {
         $categorias = $categoriaRepository->findAll();
         $server_name = $_SERVER['SERVER_NAME'];
-        $server_port = $_SERVER['SERVER_PORT'];
-        $direccion_finala = "http://" . $server_name . ":" . $server_port . "/";
+        $puerto = $_SERVER['SERVER_PORT'];
+        $server_name = $_SERVER['SERVER_NAME'];
+        switch ($puerto) {
+            case "80":
+                $rutaServidor = "http://" . $server_name . "/";
+                break;
+            case "8000":
+                $rutaServidor = "http://" . $server_name . ":" . $puerto . "/";
+                break;
+            case "443":
+                $rutaServidor = "https://" . $server_name .  "/";
+                break;
+        }
+        $direccion_finala = $rutaServidor;
         $directorio = $this->getParameter('registros');
         $url_final = str_replace($directorio, $direccion_finala, $directorio) . "assets/archivos/";
         return $this->render('categoria/index.html.twig', [
@@ -102,9 +114,11 @@ class CategoriaController extends AbstractController
         $filesystem->copy($this->getParameter('registros') . '/index.php', $directorio . '/index.php');
         $filesystem->copy($this->getParameter('registros') . '/busca_procesos.php', $directorio . '/busca_procesos.php');
         $filesystem->copy($this->getParameter('registros') . '/busca_subprocesos.php', $directorio . '/busca_subprocesos.php');
+        $filesystem->copy($this->getParameter('registros') . '/conexion.php', $directorio . '/conexion.php');
         $filesystem->chmod($directorio . '/index.php', 0777);
         $filesystem->chmod($directorio . '/busca_procesos.php', 0777);
         $filesystem->chmod($directorio . '/busca_subprocesos.php', 0777);
+        $filesystem->chmod($directorio . '/conexion.php', 0777);
         $salida = array("1");
         $response = new Response(json_encode($salida));
         $response->headers->set('Content-Type', 'application/json');
@@ -243,6 +257,10 @@ class CategoriaController extends AbstractController
                 $filesystem->remove($archivo);
 
                 $archivo = $directorio . '/busca_subprocesos.php';
+                $filesystem->remove($archivo);
+
+
+                $archivo = $directorio . '/conexion.php';
                 $filesystem->remove($archivo);
 
                 $files = glob($directorio . "/*");
