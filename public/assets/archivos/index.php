@@ -76,6 +76,10 @@ require_once 'conexion.php';
 
 
 	<script language='javascript' type='text/javascript'>
+		function regresa() {
+			document.location = 'https://registroscft.global21.cl/dashboard/';
+		}
+
 		function filtrar() {
 			$('#myModal').modal()
 			var idcategoria = document.getElementById('categoria').value;
@@ -104,7 +108,9 @@ require_once 'conexion.php';
 
 <body>
 	<div class='container-fluid'>
-		<div class='row' style="background-color:#14626f !important"><img src="../../../assets/images/logo2.png" class="img-thumbnail" width="100px" height="auto"></div>
+		<div class='row' style="background-color:#14626f !important"><img src="../../../assets/images/logo2.png" class="img-thumbnail" width="100px" height="auto">
+			&nbsp;<h3 class='text-white'><a href='javascript:regresa()'>Regresar</a></h3>
+		</div>
 		<div class="card">
 			<div class="card-header text-center">
 				<h3>Documentos de Calidad</h3>
@@ -293,7 +299,7 @@ require_once 'conexion.php';
 											echo "</tr>";
 										}
 									} else {
-										echo "<tr><td colspan='6' class='text-left text-danger'>No hay registros</td></tr>";
+										echo "<tr><td colspan='6' class='text-left'>&nbsp;</tr>";
 									}
 								} else {
 									echo "<tr><td colspan='6' class='text-left text-danger>No se pudo ejecutar la consulta</td></tr>";
@@ -363,7 +369,7 @@ require_once 'conexion.php';
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body">
-					<p id="content_modal" align="left" class='text-danger'>No se consiguieron Subprocesos asociados a este Proceso, por favor cambie la combinación de los filtros</p>
+					<p id="content_modal" align="left">No se consiguieron Subprocesos asociados a este Proceso, por favor cambie la combinación de los filtros</p>
 				</div>
 			</div>
 		</div>
