@@ -155,4 +155,35 @@ class UsuarioCategoriaController extends AbstractController
 
         return $this->redirectToRoute('app_usuario_categoria_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/delete_usuario_categoria/", name="delete_usuario_categoria", methods={"GET", "POST"})
+     */
+    public function deleteUsuarioCategoria(
+        Request $request,
+        UsuarioCategoriaRepository $usuarioCategoriaRepository,
+        ManagerRegistry $doctrine
+    ): Response {
+        $params = $request->request->all();
+        /*
+            userId:userIdv,
+            categoriaId:categoriaIdv,
+
+        */
+        //-- buscamos el usuario --//
+        $userCategoriaId = intval($params['categoriaId']);
+        $registro = $usuarioCategoriaRepository->find($userCategoriaId);
+        if ($registro) {
+            $entityManager = $doctrine->getManager();
+            $entityManager->remove($registro);
+            $entityManager->flush();
+            $salida = array("1");
+        } else {
+            $salida = array("-1");
+        }
+
+        $response = new Response(json_encode($salida));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 }
